@@ -40,7 +40,9 @@ fun BitcotNavHost(modifier: Modifier = Modifier) {
             route = Screen.ProductDetail.route,
             arguments = listOf(navArgument("productId") { type = NavType.IntType })
         ) {
-            ProductDetailRoute()
+            ProductDetailRoute(
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }
