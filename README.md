@@ -29,7 +29,8 @@ The app uses a clean, layered MVVM approach:
 - **Data layer:**
   - Retrofit API interface (`ProductApiService`)
   - DTOs + mappers
-  - Repository implementation with lightweight in-memory caching
+  - Repository implementation with in-memory + persistent cache fallback
+  - Connectivity checks to decide between network and local data
 - **Dependency Injection:**
   - Hilt application setup + module-based provisioning
 
@@ -53,6 +54,9 @@ The app uses a clean, layered MVVM approach:
   - Dot page indicator
   - Full product metadata (title, description, price, discount, rating, stock, brand, category)
 - Error state handling with retry action
+- Offline support for product list:
+  - Last successful list response is cached locally
+  - If internet is unavailable (or a request fails), cached data is shown when available
 
 ## Libraries Used
 
@@ -63,6 +67,14 @@ The app uses a clean, layered MVVM approach:
 - **Kotlin Coroutines + StateFlow** - async and state management
 - **Coil** - image loading in Compose
 - **OkHttp Logging Interceptor** - network diagnostics
+- **SharedPreferences + Moshi adapter** - lightweight local cache storage
+
+## Offline Behavior
+
+- The app uses an online-first strategy for product data.
+- On a successful list fetch, products are cached in memory and persisted locally.
+- If the device is offline, the repository returns cached products (when available) instead of failing immediately.
+- Product detail first checks in-memory data. If the item is not cached and the device is offline, an error is shown.
 
 ## API Endpoints
 
