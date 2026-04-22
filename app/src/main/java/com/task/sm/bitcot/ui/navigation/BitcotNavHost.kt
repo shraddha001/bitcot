@@ -1,5 +1,6 @@
 package com.task.sm.bitcot.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -22,6 +23,7 @@ fun BitcotNavHost(modifier: Modifier = Modifier) {
         composable(route = Screen.Splash.route) {
             SplashRoute(
                 onSplashFinished = {
+                    Log.d(TAG, "Splash finished, navigating to Home")
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Splash.route) { inclusive = true }
                         launchSingleTop = true
@@ -32,6 +34,7 @@ fun BitcotNavHost(modifier: Modifier = Modifier) {
         composable(route = Screen.Home.route) {
             HomeRoute(
                 onProductClick = { id ->
+                    Log.d(TAG, "Opening product detail for id=$id")
                     navController.navigate(Screen.ProductDetail.createRoute(id))
                 }
             )
@@ -41,8 +44,13 @@ fun BitcotNavHost(modifier: Modifier = Modifier) {
             arguments = listOf(navArgument("productId") { type = NavType.IntType })
         ) {
             ProductDetailRoute(
-                onBackClick = { navController.popBackStack() }
+                onBackClick = {
+                    Log.d(TAG, "Back pressed on ProductDetail")
+                    navController.popBackStack()
+                }
             )
         }
     }
 }
+
+private const val TAG = "BitcotNavHost"

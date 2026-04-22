@@ -1,5 +1,6 @@
 package com.task.sm.bitcot.ui.detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,15 +25,18 @@ class ProductDetailViewModel @Inject constructor(
     val uiState: StateFlow<ProductDetailUiState> = _uiState.asStateFlow()
 
     init {
+        Log.d(TAG, "ProductDetailViewModel initialized for productId=$productId")
         fetchProduct()
     }
 
     fun fetchProduct() {
         viewModelScope.launch {
+            Log.d(TAG, "fetchProduct started for productId=$productId")
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             runCatching {
                 productRepository.getProductDetail(productId)
             }.onSuccess { product ->
+                Log.d(TAG, "fetchProduct success: ${product.title} (id=${product.id})")
                 _uiState.update {
                     it.copy(
                         isLoading = false,
@@ -40,6 +44,7 @@ class ProductDetailViewModel @Inject constructor(
                     )
                 }
             }.onFailure { throwable ->
+                Log.e(TAG, "fetchProduct failed for productId=$productId: ${throwable.message}", throwable)
                 _uiState.update {
                     it.copy(
                         isLoading = false,
@@ -48,5 +53,9 @@ class ProductDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        private const val TAG = "ProductDetailVM"
     }
 }

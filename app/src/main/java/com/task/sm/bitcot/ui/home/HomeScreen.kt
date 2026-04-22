@@ -215,7 +215,7 @@ private fun ProductItem(
 
                     loading = {
                         Image(
-                            painter = painterResource(R.drawable.product_placeholder), // your placeholder image
+                            painter = painterResource(R.drawable.product_placeholder),
                             contentDescription = "Loading",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
@@ -224,45 +224,13 @@ private fun ProductItem(
 
                     error = {
                         Image(
-                            painter = painterResource(R.drawable.product_placeholder), // fallback image
+                            painter = painterResource(R.drawable.product_placeholder),
                             contentDescription = "Error",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
                     }
                 )
-               /* SubcomposeAsyncImage(
-                    model = product.thumbnail,
-                    contentDescription = product.title,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(RoundedCornerShape(14.dp)),
-                    loading = {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.surfaceVariant),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
-                        }
-                    },
-                    error = {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.surfaceVariant),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "No image",
-                                style = MaterialTheme.typography.labelSmall,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-                )*/
                 Box(
                     modifier = Modifier
                         .padding(6.dp)

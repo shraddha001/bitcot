@@ -97,7 +97,6 @@ private fun ProductDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-//                .navigationBarsPadding()
         ) {
             when {
                 uiState.isLoading -> {

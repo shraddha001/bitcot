@@ -1,5 +1,6 @@
 package com.task.sm.bitcot.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.task.sm.bitcot.domain.model.Product
@@ -23,20 +24,25 @@ class HomeViewModel @Inject constructor(
     init {
         val cachedProducts = productRepository.getCachedProducts()
         if (cachedProducts.isNotEmpty()) {
+            Log.d(TAG, "Loaded ${cachedProducts.size} cached products")
             updateProducts(cachedProducts)
         } else {
+            Log.d(TAG, "No cached products, fetching from repository")
             fetchProducts()
         }
     }
 
     fun fetchProducts() {
         viewModelScope.launch {
+            Log.d(TAG, "fetchProducts started")
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             runCatching {
                 productRepository.getProducts()
             }.onSuccess { products ->
+                Log.d(TAG, "fetchProducts success: ${products.size} products")
                 updateProducts(products)
             }.onFailure { throwable ->
+                Log.e(TAG, "fetchProducts failed: ${throwable.message}", throwable)
                 _uiState.update {
                     it.copy(
                         isLoading = false,
@@ -48,6 +54,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onCategorySelected(category: String) {
+        Log.d(TAG, "Category selected: $category")
         _uiState.update { it.copy(selectedCategory = category) }
     }
 
@@ -62,5 +69,9 @@ class HomeViewModel @Inject constructor(
                 errorMessage = null
             )
         }
+    }
+
+    private companion object {
+        private const val TAG = "HomeViewModel"
     }
 }
