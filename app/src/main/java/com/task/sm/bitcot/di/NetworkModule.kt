@@ -3,6 +3,8 @@ package com.task.sm.bitcot.di
 import com.task.sm.bitcot.data.remote.api.ProductApiService
 import com.task.sm.bitcot.data.remote.dto.ProductDtoMoshiAdapter
 import com.task.sm.bitcot.data.repository.ProductRepositoryImpl
+import com.task.sm.bitcot.core.network.AndroidNetworkChecker
+import com.task.sm.bitcot.core.network.NetworkChecker
 import com.task.sm.bitcot.domain.repository.ProductRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -71,4 +73,10 @@ object NetworkModule {
     fun provideProductRepository(
         impl: ProductRepositoryImpl
     ): ProductRepository = impl
+
+    @Provides
+    @Singleton
+    fun provideNetworkChecker(
+        impl: AndroidNetworkChecker
+    ): NetworkChecker = impl
 }
